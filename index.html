@@ -82,26 +82,40 @@
                 <span id="grand-total">0₫</span>
               </div>
 
+              <div class="payment-method-title">Phương thức thanh toán:</div>
               <div class="payment-methods">
-                <div class="method-option">
-                  <input type="radio" id="cash" name="payment" checked />
-                  <label for="cash">💵 Tiền mặt</label>
+                <div class="method-option active" data-method="cash">
+                  <span class="method-icon">💵</span>
+                  <span class="method-name">Tiền mặt</span>
                 </div>
-                <div class="method-option">
-                  <input type="radio" id="transfer" name="payment" />
-                  <label for="transfer">🏦 Chuyển khoản</label>
+                <div class="method-option" data-method="transfer">
+                  <span class="method-icon">🏦</span>
+                  <span class="method-name">Chuyển khoản</span>
                 </div>
-                <div class="method-option">
-                  <input type="radio" id="partial" name="payment" />
-                  <label for="partial">🔖 Trả một phần</label>
+                <div class="method-option" data-method="card">
+                  <span class="method-icon">💳</span>
+                  <span class="method-name">Thẻ ngân hàng</span>
                 </div>
-                <div class="method-option">
-                  <input type="radio" id="credit" name="payment" />
-                  <label for="credit">📝 Ghi nợ</label>
+                <div class="method-option" data-method="momo">
+                  <span class="method-icon">📱</span>
+                  <span class="method-name">Ví MoMo</span>
+                </div>
+                <div class="method-option" data-method="vnpay">
+                  <span class="method-icon">🔵</span>
+                  <span class="method-name">VNPay</span>
+                </div>
+                <div class="method-option" data-method="credit">
+                  <span class="method-icon">📝</span>
+                  <span class="method-name">Ghi nợ</span>
                 </div>
               </div>
 
-              <button class="checkout-btn">💳 Thanh toán</button>
+              <div class="action-buttons">
+                <button id="print-invoice-btn" class="print-btn">
+                  🖨️ In hóa đơn
+                </button>
+                <button class="checkout-btn">💳 Thanh toán</button>
+              </div>
             </div>
           </div>
         </div>

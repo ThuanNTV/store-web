@@ -66,10 +66,64 @@ let cart = [];
 document.addEventListener("DOMContentLoaded", () => {
   setupProductSearch();
   setupModalEvents();
+  setupPaymentMethods();
   setupCheckout();
+  setupPrintInvoice();
   renderProducts();
   updateCartDisplay();
 });
+
+// Function to get the selected payment method
+function getSelectedPaymentMethod() {
+  const activeMethod = document.querySelector(".method-option.active");
+  return activeMethod ? activeMethod.dataset.method : "cash"; // Default to cash if none selected
+}
+
+// Setup for the separate print invoice button
+function setupPrintInvoice() {
+  const printBtn = document.getElementById("print-invoice-btn");
+  if (!printBtn) return;
+
+  printBtn.addEventListener("click", () => {
+    if (!cart.length) {
+      alert("Vui lòng thêm sản phẩm vào giỏ hàng để in hóa đơn!");
+      return;
+    }
+
+    const customerInfoInput = document.getElementById("customer-name");
+    if (!customerInfoInput || !customerInfoInput.value.trim()) {
+      alert("Vui lòng chọn khách hàng trước khi in hóa đơn.");
+      return;
+    }
+
+    // Create temporary order object for printing
+    const tempOrder = {
+      customer: customerInfoInput.value.trim(),
+      items: JSON.parse(JSON.stringify(cart)),
+      total: calculateTotal(),
+      paymentMethod: getSelectedPaymentMethod(),
+      createdAt: new Date().toISOString(),
+    };
+
+    // Generate and print invoice without saving the order
+    generateInvoicePDFWithHTML(tempOrder);
+  });
+}
+
+// Setup for the payment method selection
+function setupPaymentMethods() {
+  const methodOptions = document.querySelectorAll(".method-option");
+
+  methodOptions.forEach((option) => {
+    option.addEventListener("click", () => {
+      // Remove active class from all options
+      methodOptions.forEach((opt) => opt.classList.remove("active"));
+
+      // Add active class to clicked option
+      option.classList.add("active");
+    });
+  });
+}
 
 function setupProductSearch() {
   const searchInput = document.getElementById("searchInput");
@@ -260,12 +314,7 @@ function setupCheckout() {
       return;
     }
 
-    const method = document.querySelector('input[name="payment"]:checked')?.id;
-    if (!method) {
-      alert("Vui lòng chọn phương thức thanh toán!");
-      return;
-    }
-
+    const method = getSelectedPaymentMethod();
     processPayment(method);
   });
 }
@@ -608,6 +657,10 @@ async function generateInvoicePDFWithHTML(order) {
 // Hàm lấy tên phương thức thanh toán từ ID
 function getPaymentMethodName(methodId) {
   const methods = {
+    cash: "Tiền mặt",
+    transfer: "Chuyển khoản",
+    partial: "Trả một phần",
+    credit: "Ghi nợ",
     "payment-cash": "Tiền mặt",
     "payment-card": "Thẻ ngân hàng",
     "payment-momo": "Ví MoMo",

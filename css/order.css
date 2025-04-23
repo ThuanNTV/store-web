@@ -75,81 +75,125 @@
   margin: 0;
 }
 
+.btn-remove-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
 /* =========================
   3. PAYMENT SECTION
 ========================= */
 .payment-section {
-  border-top: 2px solid #eee;
-  padding-top: 20px;
+  border-top: 1px solid #eee; /* Giảm độ dày của đường viền */
+  padding-top: 15px; /* Giảm padding phần trên */
+  margin-top: 10px; /* Thêm margin để tách biệt với phần trên */
 }
 
 .total-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
-  font-size: 1.3rem;
+  margin-bottom: 12px; /* Giảm margin bottom */
+  font-size: 1.2rem; /* Giảm kích thước font */
   font-weight: bold;
+}
+
+.payment-method-title {
+  font-weight: 600;
+  margin-bottom: 8px; /* Giảm margin */
+  color: #2d3436;
+  font-size: 1rem; /* Giảm kích thước font */
 }
 
 .payment-methods {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-bottom: 25px;
+  gap: 8px; /* Giảm khoảng cách giữa các phương thức */
+  margin-bottom: 15px; /* Giảm margin dưới */
 }
 
 .method-option {
   display: flex;
   align-items: center;
-  padding: 12px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  transition: all 0.2s;
+  padding: 10px; /* Giảm padding */
+  border: 1px solid #ddd; /* Giảm độ dày viền */
+  border-radius: 6px; /* Giảm border radius */
+  transition: all 0.2s ease;
+  cursor: pointer;
+  user-select: none;
 }
 
 .method-option:hover {
   border-color: #0984e3;
+  background-color: #f8fafc;
+}
+
+.method-option.active {
+  border-color: #0984e3;
+  background-color: #ebf5ff;
+  position: relative;
+}
+
+.method-option.active::after {
+  content: "✓";
+  position: absolute;
+  top: 6px; /* Điều chỉnh vị trí */
+  right: 6px; /* Điều chỉnh vị trí */
+  color: #0984e3;
+  font-weight: bold;
+  font-size: 0.9rem; /* Giảm kích thước font */
+}
+
+.method-icon {
+  font-size: 1.2rem; /* Giảm kích thước icon */
+  margin-right: 8px; /* Giảm margin */
+}
+
+.method-name {
+  font-weight: 500;
+  font-size: 0.9rem; /* Giảm kích thước font */
 }
 
 /* =========================
   4. BUTTONS & CONTROLS
 ========================= */
-.checkout-btn {
+.action-buttons {
+  display: flex;
+  gap: 8px; /* Giảm khoảng cách */
   width: 100%;
-  padding: 16px;
-  background: #00b894;
-  color: white;
+}
+
+.checkout-btn,
+.print-btn {
+  flex: 1;
+  padding: 12px; /* Giảm padding */
   border: none;
-  border-radius: 8px;
-  font-size: 1.1rem;
+  border-radius: 6px; /* Giảm border radius */
+  font-size: 1rem; /* Giảm font size */
   cursor: pointer;
   transition: background 0.2s;
+}
+
+.checkout-btn {
+  background: #00b894;
+  color: white;
 }
 
 .checkout-btn:hover {
   background: #00a383;
 }
 
-.btn-decrement,
-.btn-increment {
-  width: 32px;
-  height: 32px;
-  border: none;
-  border-radius: 6px;
-  background: #f8f9fa;
-  color: #2d3436;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
+.print-btn {
+  background: #0984e3;
+  color: white;
 }
 
-.btn-decrement:hover,
-.btn-increment:hover {
-  background: #007bff;
-  color: white;
+.print-btn:hover {
+  background: #0769b8;
 }
 
 /* =========================
@@ -192,5 +236,9 @@
 
   .item-price:last-child {
     order: 4;
+  }
+
+  .action-buttons {
+    flex-direction: column;
   }
 }

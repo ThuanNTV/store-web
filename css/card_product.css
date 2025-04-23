@@ -56,9 +56,15 @@
 /* =========================
   SEARCH BAR STYLE
 ========================= */
+
+.main_view-right-top {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .product-search {
-  width: 100%;
-  margin-bottom: 20px;
+  width: 40%;
 }
 
 .product-search input {
@@ -76,4 +82,20 @@
 .product-search input:focus {
   border-color: #0984e3;
   box-shadow: 0 0 0 3px rgba(9, 132, 227, 0.2);
+}
+
+.price-display {
+  display: flex;
+  align-items: center;
+}
+
+.price-type-selector {
+  margin-left: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  background: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }

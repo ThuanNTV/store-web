@@ -25,13 +25,23 @@
 
       <!-- Main Content -->
       <div class="Main_view-right">
-        <div class="product-search">
-          <input
-            type="text"
-            id="searchInput"
-            placeholder="Tìm kiếm sản phẩm..."
-          />
+        <div class="main_view-right-top">
+          <div class="product-search">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Tìm kiếm sản phẩm..."
+            />
+          </div>
+          <!-- Price Display Component -->
+          <div class="price-display">
+            <select id="priceTypeSelector" class="price-type-selector">
+              <option value="price">Giá bán thường</option>
+              <option value="creditPrice">Giá bán nợ</option>
+            </select>
+          </div>
         </div>
+
         <div class="product-grid" id="product-list"></div>
       </div>
 
@@ -124,5 +134,6 @@
 
     <script src="./js/global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Your updated script will be linked here -->
   </body>
 </html>

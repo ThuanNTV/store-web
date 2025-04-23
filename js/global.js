@@ -2,66 +2,121 @@ const products = [
   {
     id: "1",
     name: "iPhone 16 Pro Max 256GB | Chính hãng VN/A",
-    price: "25000000",
+    price: "29000000",
+    creditPrice: "29002312310000",
     quantity: 2,
+    brand: "Apple",
+    category: "Smartphone cao cấp",
+    image: "images/iphone16promax.jpg",
+    status: "inStock",
   },
   {
     id: "2",
     name: "Samsung Galaxy S24 Ultra 512GB",
     price: "28000000",
+    creditPrice: "280054540000",
     quantity: 1,
+    brand: "Samsung",
+    category: "Smartphone cao cấp",
+    image: "images/galaxy-s24-ultra.jpg",
+    status: "inStock",
   },
   {
     id: "3",
     name: "Xiaomi Redmi Note 13 Pro 128GB",
     price: "7500000",
+    creditPrice: "750435343530000",
     quantity: 3,
+    brand: "Xiaomi",
+    category: "Tầm trung",
+    image: "images/redmi-note-13-pro.jpg",
+    status: "inStock",
   },
   {
     id: "4",
     name: "Oppo Find X7 Pro 5G",
     price: "21000000",
+    creditPrice: "543543",
     quantity: 2,
+    brand: "Oppo",
+    category: "Flagship",
+    image: "images/oppo-find-x7-pro.jpg",
+    status: "inStock",
   },
   {
     id: "5",
     name: "Google Pixel 8 Pro 256GB",
     price: "22500000",
+    creditPrice: "345345345345",
     quantity: 1,
+    brand: "Google",
+    category: "Flagship Android",
+    image: "images/pixel-8-pro.jpg",
+    status: "outOfStock",
   },
   {
     id: "6",
     name: "OnePlus 12 512GB",
     price: "18000000",
+    creditPrice: "3455334553",
     quantity: 4,
+    brand: "OnePlus",
+    category: "Gaming",
+    image: "images/oneplus-12.jpg",
+    status: "inStock",
   },
   {
     id: "7",
     name: "Vivo X100 Pro 256GB",
     price: "19500000",
+    creditPrice: "345321312312",
     quantity: 2,
+    brand: "Vivo",
+    category: "Camera Phone",
+    image: "images/vivo-x100-pro.jpg",
+    status: "inStock",
   },
   {
     id: "8",
     name: "Realme GT 3 256GB",
     price: "12000000",
+    creditPrice: "454321231454321231",
     quantity: 3,
+    brand: "Realme",
+    category: "Hiệu năng cao",
+    image: "images/realme-gt3.jpg",
+    status: "inStock",
   },
   {
     id: "9",
     name: "ASUS ROG Phone 8 512GB",
     price: "24500000",
+    creditPrice: "45424542",
     quantity: 1,
+    brand: "ASUS",
+    category: "Gaming",
+    image: "images/rog-phone-8.jpg",
+    status: "inStock",
   },
   {
     id: "10",
     name: "Sony Xperia 1 VI 256GB",
     price: "27000000",
+    creditPrice: "7524575245",
     quantity: 2,
+    brand: "Sony",
+    category: "Multimedia",
+    image: "images/xperia-1-vi.jpg",
+    status: "inStock",
   },
 ];
 
 let cart = [];
+// Initialize with a variable that will be updated when the selector changes
+let currentPriceType = "price"; // Default to regular price
+
+// Store selected product for navbar display
+let selectedProduct = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   setupProductSearch();
@@ -69,9 +124,39 @@ document.addEventListener("DOMContentLoaded", () => {
   setupPaymentMethods();
   setupCheckout();
   setupPrintInvoice();
-  renderProducts();
+  setupPriceTypeSelector(); // New function to handle price type selection
   updateCartDisplay();
+  renderProducts(); // Initial rendering of products
 });
+
+// Setup price type selector
+function setupPriceTypeSelector() {
+  const priceTypeSelector = document.getElementById("priceTypeSelector");
+  if (priceTypeSelector) {
+    // Set initial value
+    currentPriceType = priceTypeSelector.value;
+
+    // Add change event listener
+    priceTypeSelector.addEventListener("change", () => {
+      currentPriceType = priceTypeSelector.value;
+      updateSelectedProductPrice(); // Update the displayed price in navbar
+      renderProducts(document.getElementById("searchInput").value);
+      updateCartDisplay(); // Update cart prices according to new price type
+    });
+  }
+}
+
+// Update the price display in the navbar
+function updateSelectedProductPrice() {
+  const priceDisplay = document.getElementById("selectedProductPrice");
+  if (priceDisplay && selectedProduct) {
+    const priceToUse =
+      selectedProduct[currentPriceType] || selectedProduct.price;
+    priceDisplay.textContent = formatCurrency(priceToUse);
+  } else if (priceDisplay) {
+    priceDisplay.textContent = "0₫";
+  }
+}
 
 // Function to get the selected payment method
 function getSelectedPaymentMethod() {
@@ -141,7 +226,6 @@ function renderProducts(filter = "") {
     p.name.toLowerCase().includes(keyword)
   );
 
-  // Sử dụng DocumentFragment để giảm thiểu reflow
   const fragment = document.createDocumentFragment();
 
   filteredProducts.forEach((p) => {
@@ -149,12 +233,17 @@ function renderProducts(filter = "") {
     div.className = "card_product-item";
     div.dataset.id = p.id;
 
+    // Use the current price type (regular or credit)
+    const priceToDisplay = p[currentPriceType] || p.price;
+
     div.innerHTML = `
       <div class="card_product-item-image">
-        <img src="${p.image || "../img/default.webp"}" alt="${p.name}" />
+        <img src="${p.images || "../img/default.webp"}" alt="${p.name}" />
       </div>
       <div class="card_product-item-name">${p.name}</div>
-      <div class="card_product-item-price">${formatCurrency(p.price)}</div>
+      <div class="card_product-item-price">${formatCurrency(
+        priceToDisplay
+      )}</div>
     `;
 
     fragment.appendChild(div);
@@ -171,6 +260,11 @@ document.getElementById("product-list")?.addEventListener("click", (e) => {
     const productId = item.dataset.id;
     const product = products.find((p) => p.id === productId);
     if (product) {
+      // Update selected product for navbar display
+      selectedProduct = product;
+      updateSelectedProductPrice();
+
+      // Add to cart as before
       addToCart(product);
     }
   }
@@ -200,13 +294,16 @@ function updateCartDisplay() {
     div.className = "order-item";
     div.dataset.itemId = item.id;
 
+    // Use the current price type (regular or credit)
+    const priceToDisplay = item[currentPriceType] || item.price;
+
     div.append(
       createDiv("item-name", truncateText(item.name, 40)),
-      createDiv("item-price", formatCurrency(item.price)),
+      createDiv("item-price", formatCurrency(priceToDisplay)),
       createQuantityControls(i, item.quantity),
       createDiv(
         "item-price-total",
-        formatCurrency(parseFloat(item.price) * item.quantity)
+        formatCurrency(parseFloat(priceToDisplay) * item.quantity)
       ),
       createButton("Xóa", "remove-btn", () => {
         cart.splice(i, 1);
@@ -285,10 +382,11 @@ function updateQuantity(index, newQty) {
 }
 
 function calculateTotal() {
-  return cart.reduce(
-    (sum, item) => sum + item.quantity * parseFloat(item.price),
-    0
-  );
+  return cart.reduce((sum, item) => {
+    // Use currentPriceType for total calculation
+    const priceToUse = item[currentPriceType] || item.price;
+    return sum + item.quantity * parseFloat(priceToUse);
+  }, 0);
 }
 
 function updateTotal() {
@@ -451,11 +549,22 @@ function processPayment(method) {
     return;
   }
 
+  // Create order items with the current price type
+  const orderItems = cart.map((item) => {
+    const priceToUse = item[currentPriceType] || item.price;
+    return {
+      ...item,
+      price: priceToUse, // Use the current price type for order
+      priceType: currentPriceType, // Store which price type was used
+    };
+  });
+
   const order = {
     customer: customerInfo,
-    items: JSON.parse(JSON.stringify(cart)), // Deep copy để tránh tham chiếu
+    items: orderItems,
     total: calculateTotal(),
     paymentMethod: method,
+    priceType: currentPriceType, // Store which price type was used for the order
     createdAt: new Date().toISOString(),
   };
 

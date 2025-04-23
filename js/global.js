@@ -118,17 +118,6 @@ let currentPriceType = "price"; // Default to regular price
 // Store selected product for navbar display
 let selectedProduct = null;
 
-document.addEventListener("DOMContentLoaded", () => {
-  setupProductSearch();
-  setupModalEvents();
-  setupPaymentMethods();
-  setupCheckout();
-  setupPrintInvoice();
-  setupPriceTypeSelector(); // New function to handle price type selection
-  updateCartDisplay();
-  renderProducts(); // Initial rendering of products
-});
-
 // Setup price type selector
 function setupPriceTypeSelector() {
   const priceTypeSelector = document.getElementById("priceTypeSelector");
@@ -707,80 +696,6 @@ function showErrorToUser(msg, duration = 5000) {
   }
 }
 
-// 💳 Xử lý thanh toán
-// Cập nhật hàm xử lý thanh toán
-// function processPayment(method) {
-//   const customerInfoInput = document.getElementById("customer-name");
-//   if (!customerInfoInput) return;
-
-//   const customerInfo = customerInfoInput.value.trim();
-//   if (!customerInfo) {
-//     alert("Vui lòng chọn khách hàng trước khi thanh toán.");
-//     return;
-//   }
-
-//   // Lấy thông tin giảm giá
-//   const priceReductionInput = document.getElementById("price-reduction-input");
-//   const discountInput = document.getElementById("discount-input");
-
-//   const priceReduction = parseFloat(priceReductionInput.value) || 0;
-//   const discountPercent = parseFloat(discountInput.value) || 0;
-
-//   // Tính subtotal (tổng tiền hàng chưa giảm giá)
-//   const subtotal = cart.reduce((sum, item) => {
-//     const priceToUse = item[currentPriceType] || item.price;
-//     return sum + item.quantity * parseFloat(priceToUse);
-//   }, 0);
-
-//   const discountAmount = subtotal * (discountPercent / 100);
-
-//   // Create order items with the current price type
-//   const orderItems = cart.map((item) => {
-//     const priceToUse = item[currentPriceType] || item.price;
-//     return {
-//       ...item,
-//       price: priceToUse, // Use the current price type for order
-//       priceType: currentPriceType, // Store which price type was used
-//     };
-//   });
-
-//   const order = {
-//     customer: customerInfo,
-//     items: orderItems,
-//     subtotal: subtotal, // Thêm thông tin tổng tiền hàng
-//     discountPercent: discountPercent, // Thêm thông tin phần trăm chiết khấu
-//     discountAmount: discountAmount, // Thêm thông tin số tiền chiết khấu
-//     priceReduction: priceReduction, // Thêm thông tin giảm giá trực tiếp
-//     total: calculateTotal(), // Tổng tiền cuối cùng
-//     paymentMethod: method,
-//     priceType: currentPriceType, // Store which price type was used for the order
-//     createdAt: new Date().toISOString(),
-//   };
-
-//   try {
-//     const orders = JSON.parse(localStorage.getItem("orders")) || [];
-//     orders.unshift(order);
-//     localStorage.setItem("orders", JSON.stringify(orders));
-
-//     generateInvoicePDFWithHTML(order); // Gọi hàm in PDF
-
-//     alert("Đơn hàng đã được tạo và in hóa đơn!");
-
-//     // Reset giỏ hàng và hiển thị
-//     cart = [];
-//     updateCartDisplay();
-//     updateOrderDisplay(); // Hiển thị đơn hàng mới nhất
-//     customerInfoInput.value = "";
-
-//     // Reset các trường giảm giá
-//     if (priceReductionInput) priceReductionInput.value = "";
-//     if (discountInput) discountInput.value = "";
-//   } catch (error) {
-//     console.error("Lỗi khi xử lý thanh toán:", error);
-//     alert("Có lỗi xảy ra khi xử lý thanh toán!");
-//   }
-// }
-
 // Thêm hàm updateOrderDisplay để hiển thị đơn hàng mới nhất
 function updateOrderDisplay() {
   try {
@@ -805,175 +720,6 @@ function updateOrderDisplay() {
     console.error("Lỗi khi hiển thị đơn hàng mới nhất:", error);
   }
 }
-
-// in hóa đơn PDF
-// async function generateInvoicePDFWithHTML(order) {
-//   // Kiểm tra xem html2pdf đã được tải chưa
-//   if (!window.html2pdf) {
-//     console.error("Thư viện html2pdf chưa được tải!");
-//     alert(
-//       "Không thể tạo hóa đơn PDF. Vui lòng kiểm tra kết nối internet và thử lại."
-//     );
-//     return;
-//   }
-
-//   try {
-//     const { html2pdf } = window;
-//     const invoiceNumber = `INV-${Date.now().toString().slice(-6)}`;
-
-//     // Lấy thông tin giảm giá từ form
-//     const priceReductionInput = document.getElementById(
-//       "price-reduction-input"
-//     );
-//     const discountInput = document.getElementById("discount-input");
-
-//     const priceReduction = parseFloat(priceReductionInput.value) || 0;
-//     const discountPercent = parseFloat(discountInput.value) || 0;
-
-//     // Tính subtotal và số tiền chiết khấu
-//     const subtotal = order.items.reduce((sum, item) => {
-//       return sum + parseFloat(item.price) * item.quantity;
-//     }, 0);
-
-//     const discountAmount = subtotal * (discountPercent / 100);
-
-//     // Tạo nội dung HTML
-//     const content = document.createElement("div");
-//     content.innerHTML = `
-//       <div style="font-family: 'Roboto', sans-serif; padding: 20px;">
-//         <div style="background-color: rgb(41, 128, 185); color: white; padding: 20px; text-align: center;">
-//           <h1>HÓA ĐƠN BÁN HÀNG</h1>
-//           <p>Công ty TNHH Thương mại XYZ</p>
-//           <p>Mã số thuế: 0123456789</p>
-//         </div>
-
-//         <!-- Thông tin đơn hàng -->
-//         <div style="display: flex; margin-top: 20px;">
-//           <div style="flex: 1;">
-//             <p><strong>Khách hàng:</strong> ${order.customer}</p>
-//             <p><strong>Địa chỉ:</strong> ${order.address || "---"}</p>
-//             <p><strong>Số điện thoại:</strong> ${order.phone || "---"}</p>
-//           </div>
-//           <div style="flex: 1; text-align: right;">
-//             <p><strong>Mã hóa đơn:</strong> ${invoiceNumber}</p>
-//             <p><strong>Ngày tạo:</strong> ${new Date(
-//               order.createdAt
-//             ).toLocaleDateString("vi-VN")}</p>
-//             <p><strong>Giờ tạo:</strong> ${new Date(
-//               order.createdAt
-//             ).toLocaleTimeString("vi-VN")}</p>
-//             <p><strong>Phương thức:</strong> ${getPaymentMethodName(
-//               order.paymentMethod
-//             )}</p>
-//           </div>
-//         </div>
-
-//         <hr style="margin: 20px 0; border: 1px solid #eee;">
-
-//         <!-- Bảng sản phẩm -->
-//         <table style="width: 100%; border-collapse: collapse;">
-//           <thead>
-//             <tr style="background-color: rgb(44, 62, 80); color: white;">
-//               <th style="padding: 10px; text-align: left;">Sản phẩm</th>
-//               <th style="padding: 10px; text-align: center;">Số lượng</th>
-//               <th style="padding: 10px; text-align: center;">Đơn giá</th>
-//               <th style="padding: 10px; text-align: right;">Thành tiền</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             ${order.items
-//               .map(
-//                 (item, index) => `
-//               <tr style="background-color: ${
-//                 index % 2 === 0 ? "#f9f9f9" : "white"
-//               };">
-//                 <td style="padding: 10px;">${item.name}</td>
-//                 <td style="padding: 10px; text-align: center;">${
-//                   item.quantity
-//                 }</td>
-//                 <td style="padding: 10px; text-align: center;">${formatCurrency(
-//                   item.price
-//                 )}</td>
-//                 <td style="padding: 10px; text-align: right;">${formatCurrency(
-//                   parseFloat(item.price) * item.quantity
-//                 )}</td>
-//               </tr>
-//             `
-//               )
-//               .join("")}
-//           </tbody>
-//         </table>
-
-//         <!-- Tổng cộng -->
-//         <div style="margin-top: 20px; text-align: right;">
-//           <p><strong>Tổng số lượng:</strong> ${order.items.reduce(
-//             (sum, item) => sum + item.quantity,
-//             0
-//           )}</p>
-//           <p><strong>Tổng tiền hàng:</strong> ${formatCurrency(subtotal)}</p>
-//           ${
-//             discountPercent > 0
-//               ? `<p><strong>Chiết khấu (${discountPercent}%):</strong> -${formatCurrency(
-//                   discountAmount
-//                 )}</p>`
-//               : ""
-//           }
-//           ${
-//             priceReduction > 0
-//               ? `<p><strong>Giảm giá:</strong> -${formatCurrency(
-//                   priceReduction
-//                 )}</p>`
-//               : ""
-//           }
-//           <div style="background-color: rgb(41, 128, 185); color: white; padding: 10px; margin-top: 10px;">
-//             <strong>TỔNG THANH TOÁN: ${formatCurrency(order.total)}</strong>
-//           </div>
-//         </div>
-
-//         <!-- Ghi chú -->
-//         <div style="margin-top: 30px;">
-//           <p><strong>Ghi chú:</strong></p>
-//           <p>${
-//             order.notes ||
-//             "Cảm ơn quý khách đã mua hàng tại cửa hàng chúng tôi!"
-//           }</p>
-//         </div>
-
-//         <!-- Chữ ký -->
-//         <div style="display: flex; margin-top: 50px;">
-//           <div style="flex: 1; text-align: center;">
-//             <div style="border-top: 1px solid #000; display: inline-block; width: 150px; margin-bottom: 10px;"></div>
-//             <p>Người mua hàng</p>
-//           </div>
-//           <div style="flex: 1; text-align: center;">
-//             <div style="border-top: 1px solid #000; display: inline-block; width: 150px; margin-bottom: 10px;"></div>
-//             <p>Người bán hàng</p>
-//           </div>
-//         </div>
-
-//         <!-- Footer -->
-//         <div style="margin-top: 50px; text-align: center; font-size: 10px; color: #999;">
-//           <p>Trang 1 / 1 - In ngày ${new Date().toLocaleDateString("vi-VN")}</p>
-//         </div>
-//       </div>
-//     `;
-
-//     // Cấu hình HTML2PDF
-//     const options = {
-//       margin: 10,
-//       filename: `HoaDon_${invoiceNumber}.pdf`,
-//       image: { type: "jpeg", quality: 0.98 },
-//       html2canvas: { scale: 2, useCORS: true },
-//       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-//     };
-
-//     // Tạo PDF từ HTML
-//     await html2pdf().from(content).set(options).save();
-//   } catch (error) {
-//     console.error("Lỗi khi tạo hóa đơn PDF:", error);
-//     alert("Có lỗi xảy ra khi tạo hóa đơn PDF!");
-//   }
-// }
 
 // Hàm lấy tên phương thức thanh toán từ ID
 function getPaymentMethodName(methodId) {
@@ -1306,11 +1052,10 @@ function createInvoiceHTML(order, invoiceNumber) {
   `;
 }
 
-// Sửa lại hàm processPayment để hiển thị modal trước
+// Sửa lại hàm để hiển thị modal trước
 function processPayment(method) {
   const customerInfoInput = document.getElementById("customer-name");
   if (!customerInfoInput) return;
-
   const customerInfo = customerInfoInput.value.trim();
   if (!customerInfo) {
     alert("Vui lòng chọn khách hàng trước khi thanh toán.");
@@ -1359,7 +1104,7 @@ function processPayment(method) {
   showInvoicePreview(order);
 }
 
-// Cập nhật hàm generateInvoicePDFWithHTML để hỗ trợ chế độ "chỉ lưu"
+// hỗ trợ chế độ "chỉ lưu"
 async function generateInvoicePDFWithHTML(order, saveOnly = false) {
   // Kiểm tra xem html2pdf đã được tải chưa
   if (!window.html2pdf) {
@@ -1532,9 +1277,9 @@ async function generateInvoicePDFWithHTML(order, saveOnly = false) {
   }
 }
 
-// Đảm bảo chức năng thanh toán và các modal được cài đặt khi trang tải xong
 document.addEventListener("DOMContentLoaded", () => {
-  // Các setup khác giữ nguyên
+  setupProductSearch();
+  setupModalEvents();
   setupPaymentMethods();
   setupCheckout();
   setupPrintInvoice();
@@ -1542,7 +1287,5 @@ document.addEventListener("DOMContentLoaded", () => {
   setupDiscountInputs();
   updateCartDisplay();
   renderProducts();
-
-  // Thêm setup cho modal hóa đơn
   addInvoiceModalToDOM();
 });

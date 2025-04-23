@@ -98,12 +98,29 @@
           <!-- Payment Section -->
           <div class="payment-section">
             <div class="total-container">
+              <div class="discount-row">
+                <div class="price-reduction-row">
+                  <span>Giảm giá:</span>
+                  <input
+                    type="text"
+                    id="price-reduction-input"
+                    placeholder="Nhập số tiền giảm giá"
+                  />
+                </div>
+                <div class="price-discount-row">
+                  <span>Chiết khấu</span>
+                  <input
+                    type="text"
+                    id="discount-input"
+                    placeholder="Nhập % giảm giá"
+                  />
+                </div>
+              </div>
               <div class="total-row">
                 <span>Tổng tiền:</span>
                 <span id="grand-total">0₫</span>
               </div>
 
-              <div class="payment-method-title">Phương thức thanh toán:</div>
               <div class="payment-methods">
                 <div class="method-option active" data-method="cash">
                   <span class="method-icon">💵</span>

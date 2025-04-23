@@ -26,7 +26,8 @@
   top: 50px;
   left: 10px;
   width: 220px;
-  background: #fff;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: white;
   border: 1px solid #ccc;
   padding: 10px;
   font-size: 0.85rem;
@@ -51,6 +52,14 @@
   transform: translateY(0);
   margin-left: 0;
   margin-bottom: 10px;
+}
+
+.discount-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  justify-content: center;
 }
 
 /* =========================
@@ -284,4 +293,69 @@
   .action-buttons {
     flex-direction: column;
   }
+}
+/* Kiểu dáng cho phần thông tin giảm giá */
+.discount-info {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  border-left: 3px solid #2196f3;
+}
+
+.discount-summary {
+  font-size: 0.9rem;
+}
+
+.discount-detail {
+  display: flex;
+  justify-content: space-between;
+  margin: 3px 0;
+  color: #616161;
+}
+
+.discount-detail.subtotal {
+  margin-top: 8px;
+  padding-top: 5px;
+  border-top: 1px dashed #bdbdbd;
+  font-weight: 500;
+  color: #424242;
+}
+
+/* Làm nổi bật input giảm giá khi được focus */
+#price-reduction-input:focus,
+#discount-input:focus {
+  border-color: #2196f3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+}
+
+/* Cải thiện giao diện khi nhập giảm giá */
+.price-reduction-row,
+.price-discount-row {
+  display: flex;
+  align-items: center;
+}
+
+.price-reduction-row span,
+.price-discount-row span {
+  width: 100px;
+  flex-shrink: 0;
+}
+
+#price-reduction-input,
+#discount-input {
+  flex-grow: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: right;
+}
+
+/* Màu khác nhau để phân biệt hai loại giảm giá */
+.price-reduction-row {
+  color: #d32f2f;
+}
+
+.price-discount-row {
+  color: #1976d2;
 }

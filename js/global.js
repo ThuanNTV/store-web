@@ -3,7 +3,7 @@ const products = [
     id: "1",
     name: "iPhone 16 Pro Max 256GB | Chính hãng VN/A",
     price: "29000000",
-    creditPrice: "29002312310000",
+    creditPrice: "2900310000",
     quantity: 2,
     brand: "Apple",
     category: "Smartphone cao cấp",
@@ -14,7 +14,7 @@ const products = [
     id: "2",
     name: "Samsung Galaxy S24 Ultra 512GB",
     price: "28000000",
-    creditPrice: "280054540000",
+    creditPrice: "28005000",
     quantity: 1,
     brand: "Samsung",
     category: "Smartphone cao cấp",
@@ -25,7 +25,7 @@ const products = [
     id: "3",
     name: "Xiaomi Redmi Note 13 Pro 128GB",
     price: "7500000",
-    creditPrice: "750435343530000",
+    creditPrice: "75530000",
     quantity: 3,
     brand: "Xiaomi",
     category: "Tầm trung",
@@ -47,7 +47,7 @@ const products = [
     id: "5",
     name: "Google Pixel 8 Pro 256GB",
     price: "22500000",
-    creditPrice: "345345345345",
+    creditPrice: "34535345",
     quantity: 1,
     brand: "Google",
     category: "Flagship Android",
@@ -58,7 +58,7 @@ const products = [
     id: "6",
     name: "OnePlus 12 512GB",
     price: "18000000",
-    creditPrice: "3455334553",
+    creditPrice: "34554553",
     quantity: 4,
     brand: "OnePlus",
     category: "Gaming",
@@ -69,7 +69,7 @@ const products = [
     id: "7",
     name: "Vivo X100 Pro 256GB",
     price: "19500000",
-    creditPrice: "345321312312",
+    creditPrice: "34532312",
     quantity: 2,
     brand: "Vivo",
     category: "Camera Phone",
@@ -80,7 +80,7 @@ const products = [
     id: "8",
     name: "Realme GT 3 256GB",
     price: "12000000",
-    creditPrice: "454321231454321231",
+    creditPrice: "454341231",
     quantity: 3,
     brand: "Realme",
     category: "Hiệu năng cao",
@@ -102,7 +102,7 @@ const products = [
     id: "10",
     name: "Sony Xperia 1 VI 256GB",
     price: "27000000",
-    creditPrice: "7524575245",
+    creditPrice: "75245245",
     quantity: 2,
     brand: "Sony",
     category: "Multimedia",
@@ -286,15 +286,23 @@ function updateCartDisplay() {
   const container = document.getElementById("order-items");
   if (!container) return;
 
-  // Sử dụng DocumentFragment để cải thiện hiệu suất
   const fragment = document.createDocumentFragment();
+  const itemCount = cart.length;
 
   cart.forEach((item, i) => {
     const div = document.createElement("div");
     div.className = "order-item";
     div.dataset.itemId = item.id;
 
-    // Use the current price type (regular or credit)
+    const isNearBottom = itemCount > 2 && i >= itemCount - 2;
+    const tooltipDirection = isNearBottom ? "tooltip-top" : "tooltip-right";
+
+    const tooltip = document.createElement("div");
+    tooltip.className = `cart-tooltip ${tooltipDirection}`;
+    tooltip.textContent = `Thông tin: ${item.name} - Giá nợ: ${formatCurrency(
+      item[currentPriceType]
+    )} - Giá bán: ${formatCurrency(item.price)}`;
+
     const priceToDisplay = item[currentPriceType] || item.price;
 
     div.append(
@@ -303,12 +311,13 @@ function updateCartDisplay() {
       createQuantityControls(i, item.quantity),
       createDiv(
         "item-price-total",
-        formatCurrency(parseFloat(priceToDisplay) * item.quantity)
+        formatCurrency(priceToDisplay * item.quantity)
       ),
       createButton("Xóa", "remove-btn", () => {
         cart.splice(i, 1);
         updateCartDisplay();
-      })
+      }),
+      tooltip
     );
 
     fragment.appendChild(div);
@@ -316,7 +325,6 @@ function updateCartDisplay() {
 
   container.innerHTML = "";
   container.appendChild(fragment);
-
   updateTotal();
 }
 
@@ -340,19 +348,7 @@ function createQuantityControls(index, quantity) {
     updateQuantity(index, newValue);
   });
 
-  div.append(
-    createButton(
-      "-",
-      "decrement",
-      debounce(() => adjustQuantity(index, -1), 200)
-    ),
-    input,
-    createButton(
-      "+",
-      "increment",
-      debounce(() => adjustQuantity(index, 1), 200)
-    )
-  );
+  div.append(input);
 
   return div;
 }

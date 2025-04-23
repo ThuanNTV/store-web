@@ -16,17 +16,55 @@
   margin-bottom: 20px;
 }
 
+.order-item {
+  position: relative;
+}
+
+.cart-tooltip {
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  width: 220px;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+  white-space: normal;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+.order-item:hover .cart-tooltip {
+  display: block;
+}
+
+/* Tooltip hiển thị phía trên nếu gần cuối */
+.tooltip-top {
+  left: 10px;
+  right: 100%;
+  top: auto;
+  bottom: 100%;
+  transform: translateY(0);
+  margin-left: 0;
+  margin-bottom: 10px;
+}
+
 /* =========================
   2. ORDER ITEMS
 ========================= */
 .order-item {
   display: grid;
-  grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr;
-  align-items: center;
-  gap: 15px;
-  padding: 15px 0;
-  border-bottom: 1px solid #eee;
+  grid-template-columns: 2fr 1fr 0.5fr 1fr 0.5fr;
+  gap: 10px;
+  padding: 5px 0;
+  border-bottom: 1px solid #958c8c;
   transition: all 0.3s ease;
+  align-content: center;
+  align-items: center;
 }
 
 .order-item:hover {
@@ -45,8 +83,8 @@
 
 .item-price {
   font-weight: 600;
-  color: #e74c3c;
-  text-align: end;
+  color: #3ce783;
+  text-align: center;
 }
 
 .item-price:last-child {
@@ -68,6 +106,10 @@
   border-radius: 6px;
   font-size: 14px;
 }
+.item-price-total {
+  font-weight: 600;
+  text-align: center;
+}
 
 .item-quantity input::-webkit-outer-spin-button,
 .item-quantity input::-webkit-inner-spin-button {
@@ -76,6 +118,7 @@
 }
 
 .btn-remove-btn {
+  width: 50px;
   background: #e74c3c;
   color: white;
   border: none;
@@ -111,17 +154,17 @@
 
 .payment-methods {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px; /* Giảm khoảng cách giữa các phương thức */
-  margin-bottom: 15px; /* Giảm margin dưới */
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-bottom: 5px;
 }
 
 .method-option {
   display: flex;
   align-items: center;
-  padding: 10px; /* Giảm padding */
-  border: 1px solid #ddd; /* Giảm độ dày viền */
-  border-radius: 6px; /* Giảm border radius */
+  padding: 2px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
   transition: all 0.2s ease;
   cursor: pointer;
   user-select: none;
@@ -141,7 +184,7 @@
 .method-option.active::after {
   content: "✓";
   position: absolute;
-  top: 6px; /* Điều chỉnh vị trí */
+  top: 24px; /* Điều chỉnh vị trí */
   right: 6px; /* Điều chỉnh vị trí */
   color: #0984e3;
   font-weight: bold;

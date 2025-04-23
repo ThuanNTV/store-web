@@ -1,0 +1,839 @@
+:root {
+  --primary-color: #007bff;
+  --primary-hover: #0056b3;
+  --success-color: #4caf50;
+  --success-hover: #43a047;
+  --light-bg: #f9fafb;
+  --hover-bg: #f1f1f1;
+  --even-bg: #fcfcfc;
+  --border-color: #e0e0e0;
+  --gray-border: #ccc;
+  --focus-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+  --text-color: #444;
+}
+
+.Main_view-right {
+  width: 100%;
+  height: 85vh !important;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  will-change: transform;
+}
+
+.sidebar {
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-right: 1px solid #ddd;
+}
+
+.filter-section,
+.quick-action-section {
+  margin-bottom: 24px;
+}
+
+.filter-group {
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-group input,
+.filter-group select {
+  padding: 8px;
+  border: 1px solid var(--gray-border);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: var(--focus-shadow);
+}
+
+.btn-filter,
+.btn-action {
+  padding: 10px 14px;
+  margin-top: 8px;
+  border: none;
+  background-color: var(--success-color);
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.btn-filter:hover,
+.btn-action:hover {
+  background-color: var(--success-hover);
+}
+
+.product-table-container {
+  max-height: 760px;
+  overflow-y: auto;
+  overflow-x: auto;
+  position: relative;
+}
+
+.product-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: var(--light-bg);
+  z-index: 5;
+}
+
+.product-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: separate; /* ✅ THIS IS THE FIX */
+  border-spacing: 0;
+}
+
+/* .product-table thead tr th {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2;
+} */
+
+.product-table th,
+.product-table td {
+  padding: 14px 16px;
+  text-align: center; /* Căn giữa theo chiều ngang */
+  vertical-align: middle; /* Căn giữa theo chiều dọc */
+  font-size: 15px;
+  color: var(--text-color);
+  transition: background-color 0.3s ease;
+}
+
+.product-table th {
+  background-color: var(--light-bg);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.product-table tr:nth-child(even) {
+  background-color: var(--even-bg);
+}
+
+.product-table tr:hover {
+  background-color: var(--hover-bg);
+}
+
+.product-table img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.product-table td button {
+  padding: 6px 12px;
+  margin: 4px;
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.product-table td button:hover {
+  background-color: var(--primary-hover);
+  transform: scale(1.05);
+}
+
+/* Modal style */
+/* CSS cho modal chỉnh sửa sản phẩm */
+.modal-edit {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content-edit {
+  background-color: #fff;
+  width: 900px;
+  max-width: 95%;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  padding: 30px;
+  position: relative;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-content-edit h2 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 22px;
+  font-weight: 600;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 12px;
+}
+
+.close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+  z-index: 10;
+}
+
+.close:hover {
+  color: #333;
+}
+
+#editForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 16px;
+}
+
+/* Phần hình ảnh sản phẩm */
+.product-image-section {
+  grid-column: 1 / span 2;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.product-image-container {
+  width: 180px;
+  height: 180px;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f9f9;
+}
+
+#productImage {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.image-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  padding: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.product-image-container:hover .image-actions {
+  opacity: 1;
+}
+
+.btn-change-image,
+.btn-remove-image {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 4px 8px;
+  flex: 1;
+  transition: background-color 0.2s;
+}
+
+.btn-change-image:hover {
+  background-color: rgba(52, 152, 219, 0.8);
+}
+
+.btn-remove-image:hover {
+  background-color: rgba(231, 76, 60, 0.8);
+}
+
+.form-section {
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  grid-column: 1 / span 2;
+}
+
+.form-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  margin-bottom: 8px;
+}
+
+#editForm label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+#editForm input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s;
+  box-sizing: border-box;
+}
+
+#editForm input:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  outline: none;
+}
+
+#editForm input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+#editForm input[type="number"]::-webkit-inner-spin-button,
+#editForm input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Trường full-width */
+#editForm label[for="productName"],
+#editForm input#productName {
+  grid-column: 1 / span 2;
+}
+
+/* Nhóm các trường liên quan đến giá */
+.price-group {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  grid-column: 1 / span 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 15px;
+  margin-bottom: 15px;
+}
+
+/* Hiển thị ngày cập nhật */
+.update-info {
+  grid-column: 1 / span 2;
+  font-size: 13px;
+  color: #777;
+  text-align: right;
+  margin-top: 15px;
+  font-style: italic;
+}
+
+/* Nút lưu */
+#editForm button[type="submit"] {
+  grid-column: 1 / span 2;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+#editForm button[type="submit"]:hover {
+  background-color: #2980b9;
+}
+
+#editForm button[type="submit"]:active {
+  transform: translateY(1px);
+}
+
+/* Thêm hover effect cho input */
+#editForm input:hover {
+  border-color: #bbb;
+}
+
+/* Màu sắc khác nhau cho các loại trường nhập */
+#editForm input[name="price"],
+#editForm input[name="creditPrice"],
+#editForm input[name="costPrice"],
+#editForm input[name="importPrice"],
+#editForm input[name="sellingPrice"] {
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+#editForm input[name="quantity"],
+#editForm input[name="stockQuantity"] {
+  color: #27ae60;
+  font-weight: 500;
+}
+
+#editForm input[name="productCode"],
+#editForm input[name="barcode"] {
+  color: #3498db;
+  font-weight: 500;
+  font-family: monospace;
+}
+
+/* Tùy chỉnh cho thiết bị di động */
+@media (max-width: 768px) {
+  #editForm {
+    grid-template-columns: 1fr;
+  }
+
+  .price-group {
+    grid-template-columns: 1fr;
+    grid-column: 1;
+  }
+
+  #editForm label[for="productName"],
+  #editForm input#productName,
+  #editForm button,
+  .update-info,
+  .product-image-section {
+    grid-column: 1;
+  }
+
+  .modal-content-edit {
+    padding: 20px;
+    max-height: 85vh;
+  }
+}
+
+/* Hiệu ứng khi mở form */
+.modal-edit.show {
+  animation: fadeInBg 0.3s forwards;
+}
+
+.modal-edit.show .modal-content-edit {
+  animation: slideInUp 0.4s forwards;
+}
+
+@keyframes fadeInBg {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* CSS cho modal thêm sản phẩm */
+.modal-add {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content-add {
+  background-color: #fff;
+  width: 700px;
+  max-width: 95%;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  padding: 30px;
+  position: relative;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-content-add h2 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 22px;
+  font-weight: 600;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 12px;
+}
+
+.close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+  z-index: 10;
+}
+
+.close:hover {
+  color: #333;
+}
+
+#addForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 16px;
+}
+
+/* Phần hình ảnh sản phẩm */
+.product-image-section {
+  grid-column: 1 / span 2;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.product-image-container {
+  width: 180px;
+  height: 180px;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.product-image-container:hover {
+  border-color: #3498db;
+  background-color: #f1f7fb;
+}
+
+#addProductImage {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  opacity: 0.6;
+}
+
+.image-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  padding: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.product-image-container:hover .image-actions {
+  opacity: 1;
+}
+
+.btn-change-image {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 4px 8px;
+  flex: 1;
+  transition: background-color 0.2s;
+}
+
+.btn-change-image:hover {
+  background-color: rgba(52, 152, 219, 0.8);
+}
+
+.form-section {
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  grid-column: 1 / span 2;
+}
+
+.form-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  position: relative;
+}
+
+#addForm label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+#addForm input,
+#addForm select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s;
+  box-sizing: border-box;
+}
+
+#addForm input:focus,
+#addForm select:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  outline: none;
+}
+
+#addForm input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+#addForm input[type="number"]::-webkit-inner-spin-button,
+#addForm input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Tự động tạo mã */
+.auto-generate {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.auto-generate input[type="checkbox"] {
+  width: auto;
+  margin-right: 5px;
+}
+
+.auto-generate label {
+  display: inline;
+  color: #666;
+  font-size: 12px;
+  margin: 0;
+}
+
+/* Trường full-width */
+#addForm label[for="addProductName"],
+#addForm input#addProductName {
+  grid-column: 1 / span 2;
+}
+
+/* Nhóm các trường liên quan đến giá */
+.price-group {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  grid-column: 1 / span 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 15px;
+  margin-bottom: 15px;
+}
+
+/* Các nút hành động */
+.form-actions {
+  grid-column: 1 / span 2;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-cancel {
+  padding: 12px 20px;
+  background-color: #e0e0e0;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.2s;
+}
+
+.btn-cancel:hover {
+  background-color: #d0d0d0;
+}
+
+.btn-save {
+  padding: 12px 20px;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-save:hover {
+  background-color: #219653;
+}
+
+/* Thiết lập placeholders đẹp hơn */
+#addForm input::placeholder,
+#addForm select::placeholder {
+  color: #aaa;
+  opacity: 1;
+}
+
+/* Màu sắc khác nhau cho các loại trường nhập */
+#addForm input[name="price"],
+#addForm input[name="creditPrice"],
+#addForm input[name="costPrice"] {
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+#addForm input[name="quantity"] {
+  color: #27ae60;
+  font-weight: 500;
+}
+
+#addForm input[name="productCode"] {
+  color: #3498db;
+  font-weight: 500;
+  font-family: monospace;
+}
+
+/* Tùy chỉnh cho thiết bị di động */
+@media (max-width: 768px) {
+  #addForm {
+    grid-template-columns: 1fr;
+  }
+
+  .price-group {
+    grid-template-columns: 1fr;
+    grid-column: 1;
+  }
+
+  #addForm label[for="addProductName"],
+  #addForm input#addProductName,
+  .form-actions,
+  .product-image-section {
+    grid-column: 1;
+  }
+
+  .modal-content-add {
+    padding: 20px;
+    max-height: 85vh;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .btn-cancel,
+  .btn-save {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+/* Hiệu ứng highlight cho các trường bắt buộc */
+#addForm input:required,
+#addForm select:required {
+  border-left: 3px solid #3498db;
+}
+
+/* Animation cho modal */
+.modal-add.show {
+  animation: fadeInBg 0.3s forwards;
+}
+
+.modal-add.show .modal-content-add {
+  animation: slideInUp 0.4s forwards;
+}
+
+@keyframes fadeInBg {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

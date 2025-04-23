@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sale Product System</title>
+    <link rel="stylesheet" href="./css/global.css" />
+    <link rel="stylesheet" href="./css/order.css" />
+    <link rel="stylesheet" href="./css/card_product.css" />
+  </head>
+  <body>
+    <div class="parent">
+      <!-- Navigation Bar -->
+      <div class="navbar">
+        <div class="navbar-left">
+          <h1>Sales System</h1>
+        </div>
+        <div class="navbar-right">
+          <div class="user-info">
+            <span>👤 Nhân viên: Admin</span>
+            <span>🏪 Chi nhánh: Hà Nội</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="Main_view-right">
+        <div class="product-search">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Tìm kiếm sản phẩm..."
+          />
+        </div>
+        <div class="product-grid" id="product-list"></div>
+      </div>
+
+      <!-- Order Section -->
+      <div class="Main_view-left">
+        <div class="order-section">
+          <!-- Customer Info -->
+          <div class="customer-info">
+            <label for="customer-name">Khách hàng:</label>
+            <input
+              type="text"
+              id="customer-name"
+              placeholder="Nhập tên hoặc số điện thoại khách hàng để tìm kiếm"
+            />
+
+            <button id="open-customer-modal" class="add-customer-btn">
+              Thêm
+            </button>
+            <!-- Modal -->
+            <div id="customer-modal" class="modal">
+              <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Thêm Khách Hàng</h2>
+                <input
+                  type="text"
+                  id="modal-customer-name"
+                  placeholder="Tên khách hàng"
+                />
+                <input
+                  type="text"
+                  id="modal-customer-phone"
+                  placeholder="Số điện thoại"
+                />
+                <button id="save-customer-btn">Lưu</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="order-items" id="order-items">
+            <!-- Order items will be populated by JS -->
+          </div>
+
+          <!-- Payment Section -->
+          <div class="payment-section">
+            <div class="total-container">
+              <div class="total-row">
+                <span>Tổng tiền:</span>
+                <span id="grand-total">0₫</span>
+              </div>
+
+              <div class="payment-methods">
+                <div class="method-option">
+                  <input type="radio" id="cash" name="payment" checked />
+                  <label for="cash">💵 Tiền mặt</label>
+                </div>
+                <div class="method-option">
+                  <input type="radio" id="transfer" name="payment" />
+                  <label for="transfer">🏦 Chuyển khoản</label>
+                </div>
+                <div class="method-option">
+                  <input type="radio" id="partial" name="payment" />
+                  <label for="partial">🔖 Trả một phần</label>
+                </div>
+                <div class="method-option">
+                  <input type="radio" id="credit" name="payment" />
+                  <label for="credit">📝 Ghi nợ</label>
+                </div>
+              </div>
+
+              <button class="checkout-btn">💳 Thanh toán</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./js/global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  </body>
+</html>

@@ -3,6 +3,7 @@ import {
   ProductListView,
   EditProductController,
   AddProductController,
+  ImportExportController,
   getCurrentDateTime,
   formatCurrency,
   closeModal,
@@ -33,6 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
     generateProductId,
     getCurrentDateTime,
     closeModal
+  );
+  const importExportController = new ImportExportController(
+    productService,
+    productListView,
+    formatCurrency
   );
 
   productListView.bindDeleteProduct((productId) => {

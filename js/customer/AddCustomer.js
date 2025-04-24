@@ -30,7 +30,7 @@ export class AddCustomerController {
   _initEventListeners() {
     // Show add customer modal when Add button is clicked
     document
-      .querySelector(".btn-add-customer")
+      .querySelector(".btn-action")
       .addEventListener("click", () => this.showAddModal());
 
     // Handle form submission

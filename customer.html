@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sale Product System - Product</title>
+    <link rel="stylesheet" href="./css/productCSS/index.css" />
+    <link rel="stylesheet" href="./css/global.css" />
+  </head>
+  <body>
+    <div class="parent">
+      <!-- Modal Add -->
+
+      <div id="addModal" class="modal-add">
+        <div class="modal-content-add">
+          <span class="close">&times;</span>
+          <h2>Thêm sản phẩm mới</h2>
+
+          <form id="addForm">
+            <!-- Phần hình ảnh -->
+            <div class="product-image-section">
+              <div class="product-image-container">
+                <img
+                  id="addProductImage"
+                  src="./images/placeholder-image.png"
+                  alt="Product Image"
+                />
+                <div class="image-actions">
+                  <button type="button" class="btn-change-image">
+                    Thêm ảnh
+                  </button>
+                </div>
+              </div>
+              <input
+                type="file"
+                id="addImageUpload"
+                accept="image/*"
+                style="display: none"
+              />
+              <input type="hidden" name="image" value="" />
+            </div>
+
+            <!-- Thông tin cơ bản -->
+            <div class="form-section">
+              <div class="form-section-title">Thông tin cơ bản</div>
+
+              <label for="addProductName">Tên sản phẩm:</label>
+              <input
+                type="text"
+                id="addProductName"
+                name="name"
+                placeholder="Nhập tên sản phẩm"
+                required
+              />
+
+              <div class="form-group">
+                <label for="addProductCode">Mã sản phẩm:</label>
+                <input
+                  type="text"
+                  id="addProductCode"
+                  name="productCode"
+                  placeholder="Ví dụ: SP000123"
+                  required
+                />
+                <div class="auto-generate">
+                  <input type="checkbox" id="autoGenerateCode" checked />
+                  <label for="autoGenerateCode">Tự động tạo mã</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="addBarcode">Mã vạch:</label>
+                <input
+                  type="text"
+                  id="addBarcode"
+                  name="barcode"
+                  placeholder="Nhập mã vạch (nếu có)"
+                />
+              </div>
+            </div>
+
+            <!-- Nhóm giá -->
+            <div class="price-group">
+              <div class="form-group">
+                <label for="addCostPrice">Giá nhập:</label>
+                <input
+                  type="number"
+                  id="addCostPrice"
+                  name="costPrice"
+                  placeholder="0"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="addPrice">Giá bán:</label>
+                <input
+                  type="number"
+                  id="addPrice"
+                  name="price"
+                  placeholder="0"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="addCreditPrice">Giá bán nợ:</label>
+                <input
+                  type="number"
+                  id="addCreditPrice"
+                  name="creditPrice"
+                  placeholder="0"
+                />
+              </div>
+            </div>
+
+            <!-- Phân loại sản phẩm -->
+            <div class="form-group">
+              <label for="addBrand">Thương hiệu:</label>
+              <input
+                type="text"
+                id="addBrand"
+                name="brand"
+                placeholder="Nhập thương hiệu"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="addCategory">Danh mục:</label>
+              <select id="addCategory" name="category" required>
+                <option value="">-- Chọn danh mục --</option>
+                <option value="Smartphone cao cấp">Smartphone cao cấp</option>
+                <option value="Smartphone tầm trung">
+                  Smartphone tầm trung
+                </option>
+                <option value="Smartphone giá rẻ">Smartphone giá rẻ</option>
+                <option value="Máy tính bảng">Máy tính bảng</option>
+                <option value="Laptop">Laptop</option>
+                <option value="Phụ kiện">Phụ kiện</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="addProductGroup">Nhóm sản phẩm:</label>
+              <select id="addProductGroup" name="productGroup">
+                <option value="">-- Chọn nhóm --</option>
+                <option value="Điện thoại">Điện thoại</option>
+                <option value="Laptop">Laptop</option>
+                <option value="Máy tính bảng">Máy tính bảng</option>
+                <option value="Đồng hồ thông minh">Đồng hồ thông minh</option>
+                <option value="Phụ kiện">Phụ kiện</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="addPosition">Vị trí:</label>
+              <input
+                type="text"
+                id="addPosition"
+                name="position"
+                placeholder="Nhập vị trí trong kho"
+              />
+            </div>
+
+            <!-- Thông tin kho -->
+            <div class="form-group">
+              <label for="addProductQuantity">Số lượng:</label>
+              <input
+                type="number"
+                id="addProductQuantity"
+                name="quantity"
+                value="0"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="addUnit">Đơn vị tính:</label>
+              <input
+                type="text"
+                id="addUnit"
+                name="unit"
+                value="chiếc"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="addWeight">Trọng lượng:</label>
+              <input
+                type="text"
+                id="addWeight"
+                name="weight"
+                placeholder="0 g"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="addStatus">Trạng thái:</label>
+              <select id="addStatus" name="status" required>
+                <option value="inStock">Còn hàng</option>
+                <option value="outOfStock">Hết hàng</option>
+                <option value="preOrder">Đặt trước</option>
+                <option value="discontinued">Ngừng kinh doanh</option>
+              </select>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn-cancel">Hủy bỏ</button>
+              <button type="submit" class="btn-save">Thêm sản phẩm</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div id="editModal" class="modal-edit">
+        <div class="modal-content-edit">
+          <span class="close">&times;</span>
+          <h2>Chỉnh sửa thông tin sản phẩm</h2>
+
+          <form id="editForm">
+            <!-- Phần hình ảnh -->
+            <div class="product-image-section">
+              <div class="product-image-container">
+                <img
+                  id="productImage"
+                  src="./images/iphone16promax.jpeg"
+                  alt="iPhone 16 Pro Max"
+                />
+                <div class="image-actions">
+                  <button type="button" class="btn-change-image">
+                    Thay đổi ảnh
+                  </button>
+                  <button type="button" class="btn-remove-image">
+                    Xóa ảnh
+                  </button>
+                </div>
+              </div>
+              <input
+                type="file"
+                id="imageUpload"
+                accept="image/*"
+                style="display: none"
+              />
+              <input
+                type="hidden"
+                name="image"
+                value="images/iphone16promax.jpg"
+              />
+            </div>
+
+            <!-- Thông tin cơ bản -->
+            <div class="form-section">
+              <div class="form-section-title">Thông tin cơ bản</div>
+
+              <label for="productName">Tên sản phẩm:</label>
+              <input
+                type="text"
+                id="productName"
+                name="name"
+                value="iPhone 16 Pro Max 256GB | Chính hãng VN/A"
+                required
+              />
+
+              <div class="form-group">
+                <label for="productCode">Mã sản phẩm:</label>
+                <input
+                  type="text"
+                  id="productCode"
+                  name="productCode"
+                  value="SP000082"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="barcode">Mã vạch:</label>
+                <input type="text" id="barcode" name="barcode" value="" />
+              </div>
+            </div>
+
+            <!-- Nhóm giá -->
+            <div class="price-group">
+              <div class="form-group">
+                <label for="costPrice">Giá nhập:</label>
+                <input
+                  type="number"
+                  id="costPrice"
+                  name="costPrice"
+                  value="27000000"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="price">Giá bán:</label>
+                <input
+                  type="number"
+                  id="price"
+                  name="price"
+                  value="29000000"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="creditPrice">Giá bán nợ:</label>
+                <input
+                  type="number"
+                  id="creditPrice"
+                  name="creditPrice"
+                  value="29031000"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Phân loại sản phẩm -->
+            <div class="form-group">
+              <label for="brand">Thương hiệu:</label>
+              <input
+                type="text"
+                id="brand"
+                name="brand"
+                value="Apple"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="category">Danh mục:</label>
+              <input
+                type="text"
+                id="category"
+                name="category"
+                value="Smartphone cao cấp"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="productGroup">Nhóm sản phẩm:</label>
+              <input
+                type="text"
+                id="productGroup"
+                name="productGroup"
+                value="Điện thoại"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="position">Vị trí:</label>
+              <input type="text" id="position" name="position" value="" />
+            </div>
+
+            <!-- Thông tin kho -->
+            <div class="form-group">
+              <label for="productQuantity">Số lượng:</label>
+              <input
+                type="number"
+                id="productQuantity"
+                name="quantity"
+                value="250"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="unit">Đơn vị tính:</label>
+              <input type="text" id="unit" name="unit" value="chiếc" required />
+            </div>
+
+            <div class="form-group">
+              <label for="weight">Trọng lượng:</label>
+              <input type="text" id="weight" name="weight" value="0 g" />
+            </div>
+
+            <div class="form-group">
+              <label for="status">Trạng thái:</label>
+              <input type="text" id="status" name="status" value="inStock" />
+            </div>
+
+            <!-- Thông tin cập nhật -->
+            <div class="update-info">Cập nhật lần cuối: 18/04/2025 11:00</div>
+
+            <button type="submit">Lưu thay đổi</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Navigation Bar -->
+      <div class="navbar">
+        <div class="navbar-left">
+          <div class="navbar-logo">
+            <img src="./images/logo.png" alt="Logo" />
+          </div>
+          <div class="navbar-menu">
+            <a href="./index.html">Bán hàng</a>
+            <a href="./product.html" >Sản phẩm</a>
+            <a href="./customer.html" class="active" >Khách hàng</a>
+            <a href="./report.html">Báo cáo</a>
+            <a href="./setting.html">Cài đặt</a>
+            <a href="./login.html">Đăng xuất</a>
+          </div>
+        </div>
+        <div class="navbar-right">
+          <div class="user-info">
+            <span>👤 Nhân viên: Admin</span>
+            <span>🏪 Chi nhánh: Hà Nội</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="Main_view-right">
+        
+      </div>
+
+      <!-- Order Section -->
+      <div class="Main_view-left">
+        
+    </div>
+  </body>
+  <!-- <script src="./js/products/products.js"></script> -->
+  <script type="module" src="./js/customer/main.js"></script>
+</html>

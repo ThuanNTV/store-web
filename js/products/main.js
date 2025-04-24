@@ -4,6 +4,7 @@ import {
   EditProductController,
   AddProductController,
   ImportExportController,
+  FilterProductController,
   getCurrentDateTime,
   formatCurrency,
   closeModal,
@@ -41,9 +42,20 @@ document.addEventListener("DOMContentLoaded", () => {
     formatCurrency
   );
 
+  // Initialize the filter controller
+  const filterProductController = new FilterProductController(
+    productService,
+    productListView
+  );
+
+  // Populate the category filter with existing categories
+  filterProductController.populateCategoryFilter();
+
   productListView.bindDeleteProduct((productId) => {
     productService.deleteProduct(productId);
     productListView.renderProducts();
+    // Update filter options after product changes
+    filterProductController.populateCategoryFilter();
   });
 
   productListView.renderProducts();

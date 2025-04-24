@@ -36,11 +36,22 @@
 .filter-group {
   margin-bottom: 12px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price-filter {
+  width: 75%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .filter-group input,
 .filter-group select {
+  margin-left: 1%;
+  width: 75%;
   padding: 8px;
   border: 1px solid var(--gray-border);
   border-radius: 6px;
@@ -137,7 +148,6 @@
   padding: 6px 12px;
   margin: 4px;
   border: none;
-  background-color: var(--primary-color);
   color: white;
   border-radius: 5px;
   cursor: pointer;

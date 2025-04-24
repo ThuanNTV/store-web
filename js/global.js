@@ -174,7 +174,7 @@ function renderProducts(filter = "") {
 
     div.innerHTML = `
       <div class="card_product-item-image">
-        <img src="./${p.image || "./images/default.webp"}" alt="${p.name}" />
+        <img src="./${p.image}" alt="${p.name}" />
       </div>
       <div class="card_product-item-name">${p.name}</div>
       <div class="card_product-item-price">${formatCurrency(

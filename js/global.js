@@ -1,117 +1,10 @@
-const products = [
-  {
-    id: "1",
-    name: "iPhone 16 Pro Max 256GB | Chính hãng VN/A",
-    price: "29000000",
-    creditPrice: "29031000", // Fixed from "2900310000"
-    quantity: 2,
-    brand: "Apple",
-    category: "Smartphone cao cấp",
-    image: "images/iphone16promax.jpg",
-    status: "inStock",
-  },
-  {
-    id: "2",
-    name: "Samsung Galaxy S24 Ultra 512GB",
-    price: "28000000",
-    creditPrice: "28005000", // This one seems correct
-    quantity: 1,
-    brand: "Samsung",
-    category: "Smartphone cao cấp",
-    image: "images/galaxy-s24-ultra.jpg",
-    status: "inStock",
-  },
-  {
-    id: "3",
-    name: "Xiaomi Redmi Note 13 Pro 128GB",
-    price: "7500000",
-    creditPrice: "7553000", // Fixed from "75530000"
-    quantity: 3,
-    brand: "Xiaomi",
-    category: "Tầm trung",
-    image: "images/redmi-note-13-pro.jpg",
-    status: "inStock",
-  },
-  {
-    id: "4",
-    name: "Oppo Find X7 Pro 5G",
-    price: "21000000",
-    creditPrice: "21543543", // Assuming 2.5% increase for credit
-    quantity: 2,
-    brand: "Oppo",
-    category: "Flagship",
-    image: "images/oppo-find-x7-pro.jpg",
-    status: "inStock",
-  },
-  {
-    id: "5",
-    name: "Google Pixel 8 Pro 256GB",
-    price: "22500000",
-    creditPrice: "22725000", // Assuming 1% increase for credit
-    quantity: 1,
-    brand: "Google",
-    category: "Flagship Android",
-    image: "images/pixel-8-pro.jpg",
-    status: "outOfStock",
-  },
-  {
-    id: "6",
-    name: "OnePlus 12 512GB",
-    price: "18000000",
-    creditPrice: "18350000", // Assuming 2% increase for credit
-    quantity: 4,
-    brand: "OnePlus",
-    category: "Gaming",
-    image: "images/oneplus-12.jpg",
-    status: "inStock",
-  },
-  {
-    id: "7",
-    name: "Vivo X100 Pro 256GB",
-    price: "19500000",
-    creditPrice: "19890000", // Assuming 2% increase for credit
-    quantity: 2,
-    brand: "Vivo",
-    category: "Camera Phone",
-    image: "images/vivo-x100-pro.jpg",
-    status: "inStock",
-  },
-  {
-    id: "8",
-    name: "Realme GT 3 256GB",
-    price: "12000000",
-    creditPrice: "12240000", // Assuming 2% increase for credit
-    quantity: 3,
-    brand: "Realme",
-    category: "Hiệu năng cao",
-    image: "images/realme-gt3.jpg",
-    status: "inStock",
-  },
-  {
-    id: "9",
-    name: "ASUS ROG Phone 8 512GB",
-    price: "24500000",
-    creditPrice: "24990000", // Assuming 2% increase for credit
-    quantity: 1,
-    brand: "ASUS",
-    category: "Gaming",
-    image: "images/rog-phone-8.jpg",
-    status: "inStock",
-  },
-  {
-    id: "10",
-    name: "Sony Xperia 1 VI 256GB",
-    price: "27000000",
-    creditPrice: "27540000", // Assuming 2% increase for credit
-    quantity: 2,
-    brand: "Sony",
-    category: "Multimedia",
-    image: "images/xperia-1-vi.jpg",
-    status: "inStock",
-  },
-];
+"use strict";
 
 let cart = [];
+let products = JSON.parse(localStorage.getItem("products")) || null;
+let currentCustomer = JSON.parse(
+  localStorage.getItem("currentCustomer") || "{}"
+);
 // Initialize with a variable that will be updated when the selector changes
 let currentPriceType = "price"; // Default to regular price
 
@@ -281,7 +174,7 @@ function renderProducts(filter = "") {
 
     div.innerHTML = `
       <div class="card_product-item-image">
-        <img src="${p.images || "./img/default.webp"}" alt="${p.name}" />
+        <img src="./${p.image || "./images/default.webp"}" alt="${p.name}" />
       </div>
       <div class="card_product-item-name">${p.name}</div>
       <div class="card_product-item-price">${formatCurrency(
@@ -884,9 +777,9 @@ function setupInvoiceModalEvents() {
 // Lưu đơn hàng vào localStorage
 function saveOrderToLocalStorage(order) {
   try {
-    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const orders = JSON.parse(localStorage.getItem("Orders")) || [];
     orders.unshift(order);
-    localStorage.setItem("orders", JSON.stringify(orders));
+    localStorage.setItem("Orders", JSON.stringify(orders));
     return true;
   } catch (error) {
     console.error("Lỗi khi lưu đơn hàng:", error);
@@ -948,9 +841,11 @@ function createInvoiceHTML(order, invoiceNumber) {
       <div class="invoice-info">
         <div class="customer-details">
           <h3>Thông tin khách hàng</h3>
-          <p><strong>Khách hàng:</strong> ${order.customer}</p>
-          <p><strong>Địa chỉ:</strong> ${order.address || "---"}</p>
-          <p><strong>Số điện thoại:</strong> ${order.phone || "---"}</p>
+          <p><strong>Khách hàng:</strong> ${currentCustomer.name}</p>
+          <p><strong>Địa chỉ:</strong> ${currentCustomer.address || "---"}</p>
+          <p><strong>Số điện thoại:</strong> ${
+            currentCustomer.phone || "---"
+          }</p>
         </div>
         <div class="order-details">
           <h3>Thông tin đơn hàng</h3>
@@ -1056,7 +951,7 @@ function createInvoiceHTML(order, invoiceNumber) {
 function processPayment(method) {
   const customerInfoInput = document.getElementById("customer-name");
   if (!customerInfoInput) return;
-  const customerInfo = customerInfoInput.value.trim();
+  const customerInfo = currentCustomer || customerInfoInput.value.trim();
   if (!customerInfo) {
     alert("Vui lòng chọn khách hàng trước khi thanh toán.");
     return;
@@ -1288,4 +1183,189 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCartDisplay();
   renderProducts();
   addInvoiceModalToDOM();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Get the input field and create the suggestions container
+  const input = document.getElementById("customer-name");
+  const suggestions = document.createElement("div");
+  suggestions.classList.add("autocomplete-suggestions");
+  input.parentNode.appendChild(suggestions);
+
+  // Get customer data from localStorage or use empty array if none exists
+  const customers = JSON.parse(localStorage.getItem("customers")) || [];
+
+  // Track current selection in the dropdown
+  let currentFocus = -1;
+
+  // Handle input changes - filter and display matching customers
+  input.addEventListener("input", () => {
+    // Clear previous suggestions
+    const query = input.value.toLowerCase().trim();
+    suggestions.innerHTML = "";
+    currentFocus = -1;
+
+    // Hide suggestions if query is empty
+    if (!query) {
+      suggestions.style.display = "none";
+      return;
+    }
+
+    // Filter customers based on name or phone number
+    const filtered = customers.filter(
+      (cus) =>
+        cus.name.toLowerCase().includes(query) ||
+        (cus.phone && cus.phone.includes(query))
+    );
+
+    if (filtered.length > 0) {
+      suggestions.style.display = "block";
+
+      // Create suggestion elements
+      filtered.forEach((cus, index) => {
+        const option = document.createElement("div");
+        option.classList.add("autocomplete-option");
+
+        // Highlight matching part of the text
+        const nameHighlighted = highlightMatch(cus.name, query);
+        const phoneDisplay = cus.phone ? `(${cus.phone})` : "";
+
+        option.innerHTML = `${nameHighlighted} ${phoneDisplay}`;
+        option.setAttribute("data-index", index);
+
+        // Handle click on suggestion
+        option.addEventListener("click", () => {
+          input.value = `${cus.name} - ${phoneDisplay}`;
+          localStorage.setItem("currentCustomer", JSON.stringify(cus));
+          suggestions.style.display = "none";
+        });
+
+        suggestions.appendChild(option);
+      });
+    } else {
+      // Show "no results" message
+      const noResults = document.createElement("div");
+      noResults.classList.add("autocomplete-no-results");
+      noResults.textContent = "Không tìm thấy khách hàng";
+      suggestions.appendChild(noResults);
+      suggestions.style.display = "block";
+    }
+  });
+
+  // Highlight matching text in suggestions
+  function highlightMatch(text, query) {
+    const lowerText = text.toLowerCase();
+    const startIndex = lowerText.indexOf(query.toLowerCase());
+
+    if (startIndex === -1) return text;
+
+    const endIndex = startIndex + query.length;
+    return (
+      text.substring(0, startIndex) +
+      `<strong>${text.substring(startIndex, endIndex)}</strong>` +
+      text.substring(endIndex)
+    );
+  }
+
+  // Handle keyboard navigation
+  input.addEventListener("keydown", (e) => {
+    const options = suggestions.querySelectorAll(".autocomplete-option");
+
+    // Down arrow key
+    if (e.key === "ArrowDown") {
+      currentFocus++;
+      currentFocus = Math.min(currentFocus, options.length - 1);
+      setActive(options);
+      e.preventDefault();
+    }
+    // Up arrow key
+    else if (e.key === "ArrowUp") {
+      currentFocus--;
+      currentFocus = Math.max(currentFocus, -1);
+      setActive(options);
+      e.preventDefault();
+    }
+    // Enter key
+    else if (e.key === "Enter" && currentFocus > -1) {
+      if (options[currentFocus]) {
+        options[currentFocus].click();
+        e.preventDefault();
+      }
+    }
+    // Escape key
+    else if (e.key === "Escape") {
+      suggestions.style.display = "none";
+      currentFocus = -1;
+      e.preventDefault();
+    }
+  });
+
+  // Set active suggestion
+  function setActive(options) {
+    // Remove active class from all options
+    Array.from(options).forEach((opt) => opt.classList.remove("active"));
+
+    // Add active class to current option
+    if (currentFocus >= 0 && currentFocus < options.length) {
+      options[currentFocus].classList.add("active");
+      // Ensure the active option is visible in the suggestions container
+      options[currentFocus].scrollIntoView({ block: "nearest" });
+    }
+  }
+
+  // Hide suggestions when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!suggestions.contains(e.target) && e.target !== input) {
+      suggestions.style.display = "none";
+      currentFocus = -1;
+    }
+  });
+
+  // Customer modal functionality
+  const modal = document.getElementById("customer-modal");
+  const openModalBtn = document.getElementById("open-customer-modal");
+  const closeModalBtn = document.querySelector(".close-modal");
+  const saveCustomerBtn = document.getElementById("save-customer-btn");
+  const modalNameInput = document.getElementById("modal-customer-name");
+  const modalPhoneInput = document.getElementById("modal-customer-phone");
+
+  // Open modal
+  openModalBtn.addEventListener("click", () => {
+    modal.style.display = "block";
+    modalNameInput.value = "";
+    modalPhoneInput.value = "";
+    modalNameInput.focus();
+  });
+
+  // Close modal
+  closeModalBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  // Close modal when clicking outside
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+
+  // Save new customer
+  saveCustomerBtn.addEventListener("click", () => {
+    const name = modalNameInput.value.trim();
+    const phone = modalPhoneInput.value.trim();
+
+    if (name) {
+      const newCustomer = { id: Date.now(), name, phone };
+      customers.push(newCustomer);
+      localStorage.setItem("customers", JSON.stringify(customers));
+
+      // Set as current customer and update input
+      localStorage.setItem("currentCustomer", JSON.stringify(newCustomer));
+      input.value = name;
+
+      modal.style.display = "none";
+    } else {
+      alert("Vui lòng nhập tên khách hàng");
+    }
+  });
 });
